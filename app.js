@@ -16,8 +16,7 @@ var productRoutes    = require("./routes/products"),
     indexRoutes      = require("./routes/index");
 
 // APP CONFIG
-mongoose.connect("mongodb://localhost/salesapp",
-  { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/salesapp");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -26,17 +25,9 @@ app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 app.use(flash());
 
-app.use(
-  require("express-session")({
-    secret: "Slatecube is the best",
-    resave: false,
-    saveUninitialized: false
-  })
-);
-
 // PASSPORT CONFIGURATION
 app.use(require("express-session")({
-    secret: "We are the best forever!",
+    secret: process.env.SESSION_SECRET || "change-me-in-production",
     resave: false,
     saveUninitialized: false
 }));

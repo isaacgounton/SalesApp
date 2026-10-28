@@ -42,10 +42,12 @@ router.post("/login", passport.authenticate("local",
 });
 
 // logout route
-router.get("/logout", function(req, res){
-   req.logout();
-   req.flash("success", "Logged you out!");
-   res.redirect("./products");
+router.get("/logout", function(req, res, next){
+   req.logout(function(err){
+      if(err){ return next(err); }
+      req.flash("success", "Logged you out!");
+      res.redirect("/products");
+   });
 });
 
 
